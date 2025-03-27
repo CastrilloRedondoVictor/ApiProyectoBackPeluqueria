@@ -1,8 +1,7 @@
 ﻿using ApiProyectoBackPeluqueria.Data;
-using ApiProyectoBackPeluqueria.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using ProyeApiProyectoBackPeluqueriactoBackPeluqueria.Models;
+using NugetProyectoBackPeluqueria.Models;
 using System.Data;
 
 namespace ApiProyectoBackPeluqueria.Repositories

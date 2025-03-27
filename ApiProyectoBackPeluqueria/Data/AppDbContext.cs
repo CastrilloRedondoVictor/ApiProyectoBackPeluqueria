@@ -1,6 +1,5 @@
-﻿using ApiProyectoBackPeluqueria.Models;
-using Microsoft.EntityFrameworkCore;
-using ProyeApiProyectoBackPeluqueriactoBackPeluqueria.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using NugetProyectoBackPeluqueria.Models;
 using System.Collections.Generic;
 
 namespace ApiProyectoBackPeluqueria.Data
