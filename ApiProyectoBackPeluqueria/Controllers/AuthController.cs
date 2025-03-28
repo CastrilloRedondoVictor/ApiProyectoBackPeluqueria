@@ -28,8 +28,9 @@ namespace ApiProyectoBackPeluqueria.Controllers
         [Route("[action]")]
         public async Task<ActionResult> Login(LoginModel usuario)
         {
-            Usuario usuarioLogueado = await this.repo.LoginAsync(usuario.Email, usuario.Password);
-            if (usuarioLogueado == null)
+            Usuario usuarioLogueado = await repo.GetUsuarioByEmailAsync(usuario.Email);
+
+            if (usuario == null || !BCrypt.Net.BCrypt.Verify(usuario.Password, usuarioLogueado.Contrasena))
             {
                 return Unauthorized();
             }
