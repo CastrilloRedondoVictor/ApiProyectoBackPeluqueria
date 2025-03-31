@@ -1,5 +1,6 @@
 ﻿using ApiProyectoBackPeluqueria.Helpers;
 using ApiProyectoBackPeluqueria.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetProyectoBackPeluqueria.Models;
@@ -21,7 +22,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
             this.helper = helper;
         }
 
-
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public async Task<ActionResult> GetPerfil(int id)
@@ -30,7 +31,8 @@ namespace ApiProyectoBackPeluqueria.Controllers
             return Ok(usuario);
         }
 
-        [HttpPost]
+        [Authorize]
+        [HttpPut]
         [Route("[action]")]
         public async Task<ActionResult> UpdateUsuario(Usuario usuario)
         {
