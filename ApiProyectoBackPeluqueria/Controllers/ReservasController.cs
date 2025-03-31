@@ -23,6 +23,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Route("[action]/{id}")]
         public async Task<ActionResult> FindReserva(int id)
         {
             ReservaView reserva = await this.repo.FindReservaAsync(id);
@@ -31,6 +32,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Route("[action]/{id}")]
         public async Task<ActionResult> GetProximaReservaUsuario(int id)
         {
             Reserva reserva = await this.repo.GetProximaReservaUsuarioAsync(id);
@@ -39,6 +41,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Route("[action]/{id}")]
         public async Task<ActionResult> GetServicioReserva(int id)
         {
             string servicio = await this.repo.GetServicioReservaAsync(id);

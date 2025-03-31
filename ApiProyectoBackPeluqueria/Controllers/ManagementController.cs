@@ -24,7 +24,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("[action]")]
+        [Route("[action]/{id}")]
         public async Task<ActionResult> GetPerfil(int id)
         {
             Usuario usuario = await this.repo.FindUsuario(id);
@@ -33,7 +33,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
 
         [Authorize]
         [HttpPut]
-        [Route("[action]")]
+        [Route("[action]/{id}")]
         public async Task<ActionResult> UpdateUsuario(Usuario usuario)
         {
             await this.repo.UpdateUsuarioAsync(usuario);
