@@ -55,7 +55,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("[action]")]
+        [Route("[action]/{fechaInicio}/{fechaFin}")]
         public async Task<ActionResult> AgregarDisponibilidadRango(DateTime fechaInicio, DateTime fechaFin)
         {
             await this.repo.AgregarDisponibilidadRangoAsync(fechaInicio, fechaFin);
