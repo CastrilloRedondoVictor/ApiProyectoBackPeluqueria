@@ -1,5 +1,6 @@
 ﻿using ApiProyectoBackPeluqueria.Helpers;
 using ApiProyectoBackPeluqueria.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetProyectoBackPeluqueria.Models;
@@ -21,6 +22,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
             this.helper = helper;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         [Route("[action]/{id}")]
@@ -30,6 +32,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
             return Ok(reserva);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         [Route("[action]/{id}")]
@@ -39,6 +42,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
             return Ok(reserva);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         [Route("[action]/{id}")]
@@ -48,6 +52,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
             return Ok(servicio);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public async Task<ActionResult> AgregarDisponibilidadRango(DateTime fechaInicio, DateTime fechaFin)
@@ -56,6 +61,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public async Task<ActionResult> ObtenerCitasConHoras()
@@ -64,6 +70,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
             return Ok(reservas);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         public async Task<ActionResult> ObtenerDiasDisponibles()

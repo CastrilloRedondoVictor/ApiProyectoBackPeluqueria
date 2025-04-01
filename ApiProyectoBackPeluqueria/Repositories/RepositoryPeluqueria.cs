@@ -14,7 +14,7 @@ namespace ApiProyectoBackPeluqueria.Repositories
         public RepositoryPeluqueria(AppDbContext context, IConfiguration configuration)
         {
             _context = context;
-            _connectionString = configuration.GetConnectionString("SqlPeluqueria");
+            _connectionString = configuration.GetConnectionString("SqlAzure");
         }
 
         public async Task<Usuario> LoginAsync(string email, string password)
