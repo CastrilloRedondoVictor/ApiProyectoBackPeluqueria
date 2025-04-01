@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetProyectoBackPeluqueria.Models;
 
+
 namespace ApiProyectoBackPeluqueria.Controllers
 {
     [Route("api/[controller]")]
