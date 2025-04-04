@@ -38,12 +38,6 @@ namespace ApiProyectoBackPeluqueria.Repositories
             await _context.SaveChangesAsync();
         }
 
-        // Obtener servicios
-        public async Task<List<Servicio>> ObtenerServiciosAsync()
-        {
-            return await _context.Servicios.ToListAsync();
-        }
-
         // Obtener disponibilidad por fecha
         public async Task<List<HorarioDisponible>> ObtenerDisponibilidadAsync(DateTime fecha)
         {

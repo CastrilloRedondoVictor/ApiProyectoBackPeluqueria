@@ -24,6 +24,33 @@ namespace ApiProyectoBackPeluqueria.Controllers
         }
 
         [Authorize]
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<ActionResult> InsertarReserva(int clienteId, int servicioId, DateTime fechaHoraInicio)
+        {
+            await this.repo.InsertarReservaAsync(clienteId, servicioId, fechaHoraInicio);
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("[action]")]
+        [Route("[action]/{id}")]
+        public async Task<ActionResult> DeleteReserva(int id)
+        {
+            var reserva = await this.repo.FindReservaAsync(id);
+            if (reserva != null)
+            {
+                await this.repo.EliminarReservaAsync(id);
+                return Ok();
+            }
+            else
+            {
+                return NotFound("Reserva no encontrada");
+            }
+        }
+
+        [Authorize]
         [HttpGet]
         [Route("[action]")]
         [Route("[action]/{id}")]
@@ -78,6 +105,24 @@ namespace ApiProyectoBackPeluqueria.Controllers
         {
             var dias = await this.repo.ObtenerDiasDisponibles();
             return Ok(dias);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("[action]")]
+        public async Task<ActionResult> ObtenerReservasClientes()
+        {
+            var reservas = await this.repo.ObtenerReservasClientesAsync();
+            return Ok(reservas);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("[action]/{servicioId}/{fecha}")]
+        public async Task<ActionResult> ObtenerHorariosDisponiblesPorFecha(int servicioId, DateTime fecha)
+        {
+            var reservas = await this.repo.ObtenerHorariosDisponiblesPorFechaAsync(servicioId, fecha);
+            return Ok(reservas);
         }
     }
 }
