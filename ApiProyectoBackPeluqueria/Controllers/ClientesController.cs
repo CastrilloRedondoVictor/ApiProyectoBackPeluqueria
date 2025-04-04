@@ -43,4 +43,5 @@ namespace ApiProyectoBackPeluqueria.Controllers
                 return NotFound("Usuario no encontrado");
             }
         }
+    }
 }
