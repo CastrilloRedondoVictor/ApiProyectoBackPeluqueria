@@ -44,7 +44,8 @@ namespace ApiProyectoBackPeluqueria.Controllers
                     expires: DateTime.Now.AddMinutes(60),
                     notBefore: DateTime.UtcNow
                 );
-                return Ok(new { authToken = new JwtSecurityTokenHandler().WriteToken(token), user = usuarioLogueado });
+                var user = new { Nombre = usuarioLogueado.Nombre, Id = usuarioLogueado.Id, Imagen = usuarioLogueado.Imagen, IdRolUsuario = usuarioLogueado.IdRolUsuario };
+                return Ok(new { authToken = new JwtSecurityTokenHandler().WriteToken(token), user = user });
             }
         }
 

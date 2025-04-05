@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetProyectoBackPeluqueria.Models;
+using Newtonsoft.Json.Linq;
 
 
 namespace ApiProyectoBackPeluqueria.Controllers
@@ -26,9 +27,9 @@ namespace ApiProyectoBackPeluqueria.Controllers
         [Authorize]
         [HttpPost]
         [Route("[action]")]
-        public async Task<ActionResult> InsertarReserva(int clienteId, int servicioId, DateTime fechaHoraInicio)
+        public async Task<ActionResult> InsertarReserva(ReservaModel reserva)
         {
-            await this.repo.InsertarReservaAsync(clienteId, servicioId, fechaHoraInicio);
+            await this.repo.InsertarReservaAsync(reserva);
             return Ok();
         }
 
@@ -82,12 +83,18 @@ namespace ApiProyectoBackPeluqueria.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("[action]/{fechaInicio}/{fechaFin}")]
-        public async Task<ActionResult> AgregarDisponibilidadRango(DateTime fechaInicio, DateTime fechaFin)
+        [Route("[action]")]
+        public async Task<ActionResult> AgregarDisponibilidadRango([FromBody] AgregarDisponibilidadModel body)
         {
-            await this.repo.AgregarDisponibilidadRangoAsync(fechaInicio, fechaFin);
-            return Ok();
+            DisponibilidadResponse response = await this.repo.AgregarDisponibilidadRangoAsync(
+                body.FechaInicio,
+                body.FechaFin
+            );
+
+            // Devolver como un objeto JSON con las propiedades esperadas
+            return Ok(response);
         }
+
 
         [Authorize]
         [HttpGet]
@@ -117,11 +124,12 @@ namespace ApiProyectoBackPeluqueria.Controllers
         }
 
         [Authorize]
-        [HttpGet]
-        [Route("[action]/{servicioId}/{fecha}")]
-        public async Task<ActionResult> ObtenerHorariosDisponiblesPorFecha(int servicioId, DateTime fecha)
+        [HttpPost]
+        [Route("[action]/{servicioId}")]
+        public async Task<ActionResult> ObtenerHorariosDisponiblesPorFecha(int servicioId, [FromBody] string fecha)
         {
-            var reservas = await this.repo.ObtenerHorariosDisponiblesPorFechaAsync(servicioId, fecha);
+            var fechaDate = DateTime.Parse(fecha);
+            var reservas = await this.repo.ObtenerHorariosDisponiblesPorFechaAsync(servicioId, fechaDate);
             return Ok(reservas);
         }
     }

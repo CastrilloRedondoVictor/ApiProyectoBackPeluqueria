@@ -59,13 +59,15 @@ namespace ApiProyectoBackPeluqueria.Repositories
         }
 
         // Insertar reserva
-        public async Task InsertarReservaAsync(int clienteId, int servicioId, DateTime fechaHoraInicio)
+        public async Task InsertarReservaAsync(ReservaModel reserva)
         {
+            var fecha = DateTime.Parse(reserva.FechaHoraInicio);
+
             await _context.Database.ExecuteSqlRawAsync(
                 "EXEC InsertarReservaSimple @ClienteId, @ServicioId, @FechaHoraInicio",
-                new SqlParameter("@ClienteId", clienteId),
-                new SqlParameter("@ServicioId", servicioId),
-                new SqlParameter("@FechaHoraInicio", fechaHoraInicio)
+                new SqlParameter("@ClienteId", reserva.ClienteId),
+                new SqlParameter("@ServicioId", reserva.ServicioId),
+                new SqlParameter("@FechaHoraInicio", fecha)
             );
         }
 
@@ -133,7 +135,7 @@ namespace ApiProyectoBackPeluqueria.Repositories
         }
 
 
-        public async Task<(int diasAgregados, int diasExistentes)> AgregarDisponibilidadRangoAsync(DateTime fechaInicio, DateTime fechaFin)
+        public async Task<DisponibilidadResponse> AgregarDisponibilidadRangoAsync(DateTime fechaInicio, DateTime fechaFin)
         {
             int diasAgregados = 0;
             int diasExistentes = 0;
@@ -170,7 +172,7 @@ namespace ApiProyectoBackPeluqueria.Repositories
                 }
             }
 
-            return (diasAgregados, diasExistentes);
+            return new DisponibilidadResponse { DiasAgregados = diasAgregados, DiasExistentes = diasExistentes };
         }
 
 

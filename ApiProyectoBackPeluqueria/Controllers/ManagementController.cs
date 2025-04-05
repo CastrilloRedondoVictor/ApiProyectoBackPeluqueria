@@ -33,7 +33,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
 
         [Authorize]
         [HttpPut]
-        [Route("[action]/{id}")]
+        [Route("[action]")]
         public async Task<ActionResult> UpdateUsuario(Usuario usuario)
         {
             await this.repo.UpdateUsuarioAsync(usuario);
