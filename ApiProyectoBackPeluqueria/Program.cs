@@ -4,56 +4,57 @@ using ApiProyectoBackPeluqueria.Repositories;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
-using Azure.Identity; // si necesitas autenticación DefaultAzureCredential
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Registrar clientes de Azure (KeyVault)
 builder.Services.AddAzureClients(factory =>
 {
     factory.AddSecretClient(builder.Configuration.GetSection("KeyVault"));
 });
 
-// Configurar Helper de OAuth
+SecretClient secretClient = builder.Services.BuildServiceProvider()
+                                            .GetRequiredService<SecretClient>();
+
+KeyVaultSecret secretConnectionString = await secretClient.GetSecretAsync("sqlpeluqueria");
+
+// Add services to the container.
 HelperActionServicesOAuth helper = new HelperActionServicesOAuth(builder.Configuration);
-builder.Services.AddSingleton(helper);
+
+builder.Services.AddSingleton<HelperActionServicesOAuth>(helper);
 
 builder.Services.AddAuthentication(helper.GetAuthenticateSchema())
     .AddJwtBearer(helper.GetJwtBearerOptions());
 
 builder.Services.AddTransient<RepositoryPeluqueria>();
 
-// Configurar AppDbContext de forma correcta
-builder.Services.AddDbContext<AppDbContext>(async (serviceProvider, options) =>
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    var secretClient = serviceProvider.GetRequiredService<SecretClient>();
-
-    KeyVaultSecret secretConnectionString = await secretClient.GetSecretAsync("sqlpeluqueria");
-
     options.UseSqlServer(secretConnectionString.Value);
 });
 
-// Configurar controladores y OpenAPI
 builder.Services.AddControllers();
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configurar middleware
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); // opcional
 }
-
 app.MapOpenApi();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/openapi/v1.json", "ApiProyectoBackPeluqueria V1");
-    c.RoutePrefix = "";
-});
 
 app.UseHttpsRedirection();
+
+app.UseSwaggerUI(app =>
+{
+    app.SwaggerEndpoint("/openapi/v1.json", "ApiProyectoBackPeluqueria");
+    app.RoutePrefix = "";
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();
