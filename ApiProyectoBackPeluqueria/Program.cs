@@ -1,9 +1,21 @@
 using ApiProyectoBackPeluqueria.Data;
 using ApiProyectoBackPeluqueria.Helpers;
 using ApiProyectoBackPeluqueria.Repositories;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAzureClients(factory =>
+{
+    factory.AddSecretClient(builder.Configuration.GetSection("KeyVault"));
+});
+
+SecretClient secretClient = builder.Services.BuildServiceProvider()
+                                            .GetRequiredService<SecretClient>();
+
+KeyVaultSecret secretConnectionString = await secretClient.GetSecretAsync("sqlpeluqueria");
 
 // Add services to the container.
 HelperActionServicesOAuth helper = new HelperActionServicesOAuth(builder.Configuration);
@@ -17,7 +29,7 @@ builder.Services.AddTransient<RepositoryPeluqueria>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlAzure"));
+    options.UseSqlServer(secretConnectionString.Value);
 });
 
 builder.Services.AddControllers();
