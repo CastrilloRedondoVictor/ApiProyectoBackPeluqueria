@@ -28,9 +28,9 @@ builder.Services.AddAuthentication(helper.GetAuthenticateSchema())
 builder.Services.AddTransient<RepositoryPeluqueria>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlServer(secretConnectionString.Value);
-});
+
+    options.UseSqlServer(secretConnectionString.Value)
+);
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
