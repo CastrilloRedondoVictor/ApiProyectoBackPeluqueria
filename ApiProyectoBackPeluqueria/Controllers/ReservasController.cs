@@ -105,6 +105,7 @@ namespace ApiProyectoBackPeluqueria.Controllers
             return Ok(reservas);
         }
 
+
         [Authorize]
         [HttpGet]
         [Route("[action]")]

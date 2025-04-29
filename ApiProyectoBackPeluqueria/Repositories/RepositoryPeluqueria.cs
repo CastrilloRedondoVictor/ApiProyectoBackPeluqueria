@@ -1,4 +1,5 @@
 ﻿using ApiProyectoBackPeluqueria.Data;
+using ApiProyectoBackPeluqueria.Helpers;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using NugetProyectoBackPeluqueria.Models;
@@ -11,10 +12,10 @@ namespace ApiProyectoBackPeluqueria.Repositories
         private readonly AppDbContext _context;
         private readonly string _connectionString;
 
-        public RepositoryPeluqueria(AppDbContext context, IConfiguration configuration)
+        public RepositoryPeluqueria(AppDbContext context, RepositoryConnectionOptions options)
         {
             _context = context;
-            _connectionString = configuration.GetConnectionString("SqlAzure");
+            _connectionString = options.ConnectionString;
         }
 
         public async Task<Usuario> LoginAsync(string email, string password)

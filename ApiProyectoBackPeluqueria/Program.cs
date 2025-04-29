@@ -17,6 +17,11 @@ SecretClient secretClient = builder.Services.BuildServiceProvider()
 
 KeyVaultSecret secretConnectionString = await secretClient.GetSecretAsync("sqlpeluqueria");
 
+builder.Services.AddSingleton(new RepositoryConnectionOptions
+{
+    ConnectionString = secretConnectionString.Value
+});
+
 // Add services to the container.
 HelperActionServicesOAuth helper = new HelperActionServicesOAuth(builder.Configuration);
 
